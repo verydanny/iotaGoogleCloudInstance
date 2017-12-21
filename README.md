@@ -5,9 +5,9 @@ for free for at least 3 months.
 
 **Table of Contents:**
 
-[Starting Your Instance](#starting-your-instance)
-[Installing IRI](#installing-iri)
-[Monitoring IRI](#monitoring-iri)
+[Starting Your Instance](#starting-your-instance)  
+[Installing IRI](#installing-iri)  
+[Monitoring IRI](#monitoring-iri)  
 
 ### Starting Your Instance
 
@@ -149,7 +149,18 @@ echo '*/15 * * * * root bash -c "bash <(curl -s https://gist.githubusercontent.c
 ```
 ### Monitoring IRI
 
-1. Check the health of the Node with this command:
+1. Check the health of the Node with this command, make sure you have no errors:
 ```bash
 journalctl -u iota -f
+```
+
+2. Show all neighbors you have now:
+```bash
+curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1.4' -d '{"command": "getNeighbors"}' | jq
+```
+
+3. Show IRI Status:  
+***PLEASE NOTE:*** It takes a long time to get up from milestone 243000 to the current one with default swarm nodes I provided. Nelson fixes this issues.
+```bash
+curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1.4' -d '{"command": "getNodeInfo"}' | jq
 ```
