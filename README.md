@@ -145,7 +145,7 @@ You can now start/stop/restart the service with: `sudo service iota start|stop|r
 ```bash
 cat << "EOF" | sudo -u iota tee /home/iota/node/iota.ini
 ```
-Then paste the following, remember to add a few RELIABLE neighbors. Reliable neighbors have NEW incoming transactions. You can ask for neighbors on the iotatangle.slack. People are having luck with TCP vs. UDP. I have no idea because syncing is out of whack.
+Then paste the following, remember to add a few RELIABLE neighbors. Reliable neighbors have NEW incoming transactions. You can ask for neighbors on the iotatangle.slack. People are having luck with TCP vs. UDP. I have no idea because syncing is out of whack. Press enter once you pasted and entered neighbors.
 ```bash
 [IRI]
 PORT = 14265
