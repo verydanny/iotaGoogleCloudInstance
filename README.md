@@ -6,6 +6,8 @@ for free for at least 3 months.
 **Table of Contents:**
 
 [Starting Your Instance](#starting-your-instance)
+[Installing IRI](#installing-iri)
+[Monitoring IRI](#monitoring-iri)
 
 ### Starting Your Instance
 
@@ -145,7 +147,7 @@ sudo service iota start
 ```bash
 echo '*/15 * * * * root bash -c "bash <(curl -s https://gist.githubusercontent.com/zoran/48482038deda9ce5898c00f78d42f801/raw)"' | sudo tee /etc/cron.d/iri_updater > /dev/null
 ```
-### Monitoring IRI [](#monitoring)
+### Monitoring IRI
 
 1. Check the health of the Node with this command:
 ```bash
