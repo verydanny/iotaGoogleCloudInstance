@@ -199,3 +199,9 @@ curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IO
 ```bash
 curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1.4' -d '{"command": "getNodeInfo"}' | jq
 ```
+
+4. If IRI gets stuck on a milestone, you need to stop the service and restart it.
+
+I'm running 6 nodes now, please help out the cost by donating here:  
+ETH:  `0x80db79A9ECA38Bc790b80FA06F42683A5FCfB32A`   
+IOTA: `AHKTYQKUMNUIEVSXYBJSRMRYSMGNTKSLHIUZRCHJIJJUZ9WUYUXISAXHUJUESQVIAIZDBGUBIGENYOSNBPKCELWZRX`
