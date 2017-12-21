@@ -95,13 +95,21 @@ sudo -u iota wget -O /home/iota/node/iri-1.4.1.4.jar https://github.com/iotaledg
 ```bash
 sudo nano /lib/systemd/system/iota.service
 ```
-***IMPORTANT:*** Then paste, but remember to substitute `{{ SUBSTITUTE HERE }}` with your server's ram. Here's a simple chart:
+***IMPORTANT:*** Then paste, but remember to remove `{{ SUBSTITUTE }}` and substitute with your server's ram. Here's a simple chart:
 - 4gb: `-Xmx3g`
 - 6gb: `-Xmx4500m` or `-Xmx4g`
 - 8gb: `-Xmx6144m` or `-Xmx6g`
 - 10gb: `-Xmx8192m` or `-Xmx8g`
 - 12gb: `-Xmx10240m` or `-Xmx10g`
-- 16gb: `-Xmx14336m` or `-Xmx14g`
+- 16gb: `-Xmx14336m` or `-Xmx14g`  
+
+So the line will read:   
+```bash
+ExecStart=/usr/bin/java -Xmx6144m -Djava.net.preferIPv4Stack=true -jar iri-1.4.1.4.jar -c iota.ini` for an 8gb server.
+```
+
+Paste this:  
+
 ```bash
 [Unit]
 Description=IOTA (IRI) full node
@@ -117,7 +125,7 @@ ExecReload=/bin/kill -HUP $MAINPID
 KillMode=mixed
 KillSignal=SIGTERM
 TimeoutStopSec=60
-ExecStart=/usr/bin/java {{ SUBSTITUTE HERE }} -Djava.net.preferIPv4Stack=true -jar iri-1.4.1.4.jar -c iota.ini
+ExecStart=/usr/bin/java {{ SUBSTITUTE }} -Djava.net.preferIPv4Stack=true -jar iri-1.4.1.4.jar -c iota.ini
 SyslogIdentifier=IRI
 Restart=on-failure
 RestartSec=30
@@ -134,7 +142,7 @@ sudo systemctl daemon-reload && sudo systemctl enable iota.service
 ```
 You can now start/stop/restart the service with: `sudo service iota start|stop|restart|status`
 
-9. Now we have to configure IRI.
+9. Now we have to configure IRI. Type this into the terminal:
 ```bash
 cat << "EOF" | sudo -u iota tee /home/iota/node/iota.ini
 ```
