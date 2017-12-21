@@ -5,6 +5,7 @@ for free for at least 3 months.
 
 **Table of Contents:**
 
+Google Cloud:  
 [Starting Your Instance](#starting-your-instance)  
 [Installing IRI](#installing-iri)  
 [Monitoring IRI](#monitoring-iri)  
@@ -37,11 +38,37 @@ ssh, etc. Here's the location of all specific zones: (https://cloud.google.com/c
 
 11. **Important:** Under Firewall, make sure "Allow HTTP traffic" and "Allow HTTPS traffic" is checked.
 
-12. Create instance
+12. Create instance, once it's done we have to enable all the ports.
 
-13. Once done, click the SSH icon, this will take you right to the shell where the real fun begins.
+13. We must enable all the ports for IRI and nelson to work properly, In the search box type `External IP addresses`. You'll see your server, make sure you change the IP from `Ephemeral` to `Static`.
 
-### Installing IRI
+<img src="./static/images/gc2.png" style="max-width: 450px">  
+
+14. Now we have to enable the necessary ports. Click `Firewall rules` on the left side. Create a new firewall rule,
+we have 4 ports we have to open (14265, udp 14600, tcp 15600, and 16600 for nelson).
+
+15. Start with 14265, call it something like iota-14265-in,   
+Direction of traffic: `Ingress`  
+Action on match: `Allow`,  
+Targets:  `All instances in the network`  
+IP ranges: `0.0.0.0/0`  
+Specified protocols and ports: `tcp; udp:14265;`
+
+16. Repeat this except call the new one iota-14265-out, and Direction of traffic: `Egress`.
+
+17. Repeat the same for port 16600.
+
+18. For udp 14600, you only have to do Specified protocols and ports: `udp:14600;`, for tcp `tcp:15600`.
+
+19. Remember to do both in and out ( `Ingress` and `Egress` ).
+
+20. Go back to Instances, Google Compute, click on `SSH` to access the shell and part 2, Installing IRI.
+
+<img src="./static/images/gc3.png" style="max-width: 450px">  
+
+### Installing IRI  
+
+We have to do a bit of maintenance on the server and upgrade all the things we need to get up and running.
 
 1. Lets upgrade as needed:
 ```bash
@@ -105,7 +132,7 @@ Alias=iota.service
 ```bash
 sudo systemctl daemon-reload && sudo systemctl enable iota.service
 ```
-You can not start/stop/restart the service with: `sudo service iota start|stop|restart|status`
+You can now start/stop/restart the service with: `sudo service iota start|stop|restart|status`
 
 9. Now we have to configure IRI.
 ```bash
@@ -133,7 +160,7 @@ EOF
 ```bash
 cd /home/iota/node/
 ```
-Then download and copy the database into the directory, then delete the download (it's big, like 8gb). This will take some time.
+Then download and copy the database into the directory, then delete the download (it's big, like 8gb). ***This will take some time.***
 ```bash
 sudo curl -O http://db.iota.partners/IOTA.partners-mainnetdb.tar.gz && sudo tar xzfv ./IOTA.partners-mainnetdb.tar.gz -C ./mainnetdb && sudo rm ./IOTA.partners-mainnetdb.tar.gz
 ```
@@ -160,7 +187,7 @@ curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IO
 ```
 
 3. Show IRI Status:  
-***PLEASE NOTE:*** It takes a long time to get up from milestone 243000 to the current one with default swarm nodes I provided. Nelson fixes this issues.
+***PLEASE NOTE:*** It takes a long time to get up from milestone 243000 to the current one with default swarm nodes I provided. Nelson fixes this issues (mostly).
 ```bash
 curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1.4' -d '{"command": "getNodeInfo"}' | jq
 ```
