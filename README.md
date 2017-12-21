@@ -145,7 +145,7 @@ You can now start/stop/restart the service with: `sudo service iota start|stop|r
 ```bash
 cat << "EOF" | sudo -u iota tee /home/iota/node/iota.ini
 ```
-Then paste the following, followed by enter:
+Then paste the following, remember to add a few RELIABLE neighbors. Reliable neighbors have NEW incoming transactions. You can ask for neighbors on the iotatangle.slack. People are having luck with TCP vs. UDP. I have no idea because syncing is out of whack.
 ```bash
 [IRI]
 PORT = 14265
@@ -157,9 +157,9 @@ HEADLESS = true
 DEBUG = false
 TESTNET = false
 DB_PATH = mainnetdb
-RESCAN_DB = false
+RESCAN_DB = true
 REMOTE_LIMIT_API="removeNeighbors, addNeighbors, interruptAttachingToTangle, attachToTangle, getNeighbors"
-NEIGHBORS = udp://94.156.128.15:14600 udp://185.181.8.149:14600 udp://88.99.249.250:41041
+NEIGHBORS = {{ NEIGHBORS GO HERE }}
 EOF
 ```
 
@@ -200,6 +200,20 @@ curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IO
 ```
 
 4. If IRI gets stuck on a milestone, you need to stop the service and restart it.
+
+5. Add/Remove Neighbors:  
+Add:
+```bash
+curl -H 'X-IOTA-API-VERSION: 1.4' -d '{"command":"addNeighbors", "uris":[
+  "tcp://ip-of-the-new-neighbor:12345", "udp://ip-of-the-new-neighbor:54321"
+]}' http://localhost:14265
+```
+Remove:  
+```bash
+curl -H 'X-IOTA-API-VERSION: 1.4' -d '{"command":"removeNeighbors", "uris":[
+  "tcp://ip-of-the-new-neighbor:12345", "udp://ip-of-the-new-neighbor:54321"
+]}' http://localhost:14265
+```
 
 I'm running 6 nodes now, please help out the cost by donating here:
 
