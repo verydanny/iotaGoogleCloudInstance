@@ -5,9 +5,9 @@ for free for at least 3 months.
 
 **Table of Contents:**
 
-[Starting Your Instance](#starting-instance)
+[Starting Your Instance](#starting-your-instance)
 
-### Starting Your Instance[](#starting-instance)
+### Starting Your Instance
 
 1. Make a Google Cloud account (https://console.cloud.google.com/).
 
