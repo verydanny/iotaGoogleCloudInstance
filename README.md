@@ -37,4 +37,7 @@ ssh, etc. Here's the location of all specific zones: (https://cloud.google.com/c
 
 ### Installing IRI
 
-1. 
+1. Lets install all the dependencies and upgrade as needed:
+```bash
+sudo apt update -qqy --fix-missing && sudo apt-get upgrade -y && sudo apt-get clean -y && sudo apt-get autoremove -y --purge
+```
