@@ -196,7 +196,7 @@ curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IO
 ```
 
 3. Show IRI Status:  
-***PLEASE NOTE:*** It takes a long time to get up from milestone 243000 to the current one with default swarm nodes I provided. Nelson fixes this issues (mostly).
+***PLEASE NOTE:*** It takes a long time to get up from milestone 243000 to the current one, be it with nelson or manual neighbors.
 ```bash
 curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1.4' -d '{"command": "getNodeInfo"}' | jq
 ```
@@ -302,7 +302,7 @@ curl -H 'X-IOTA-API-VERSION: 1.4' -d '{"command":"removeNeighbors", "uris":[
 
 Remember to have the connection type before their address.
 
-8. If you get stuck on a number **HIGHER** than 243000 for longer than 30 minutes, run this command:
+8. If you get stuck on a number **HIGHER** than 243000 for longer than 30 minutes, run this command and start all over:
 ```bash
 sudo rm -r /home/iota/node/mainnet.log && sudo rm -r /home/iots/node/mainnetdb && sudo -u iota mkdir /home/iota/node/mainnetdb && cd /home/iota/node && sudo curl -O http://db.iota.partners/IOTA.partners-mainnetdb.tar.gz && sudo tar xzfv ./IOTA.partners-mainnetdb.tar.gz -C /home/iota/node/mainnetdb && sudo rm ./IOTA.partners-mainnetdb.tar.gz && sudo service iota start && sudo nelson --config /home/nelson/config.ini
 ```
