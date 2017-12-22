@@ -169,7 +169,7 @@ cd /home/iota/node/
 ```
 Then download and copy the database into the directory, then delete the download (it's big, like 8gb). ***This will take some time.***
 ```bash
-sudo curl -O http://db.iota.partners/IOTA.partners-mainnetdb.tar.gz && sudo tar xzfv ./IOTA.partners-mainnetdb.tar.gz -C ./mainnetdb && sudo rm ./IOTA.partners-mainnetdb.tar.gz
+sudo curl -O http://db.iota.partners/IOTA.partners-mainnetdb.tar.gz && sudo tar xzfv ./IOTA.partners-mainnetdb.tar.gz -C ./mainnetdb && sudo rm ./IOTA.partners-mainnetdb.tar.gz && sudo service iota start
 ```
 
 11. We are ready to start the IRI node for the first time.
@@ -199,16 +199,17 @@ curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IO
 curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1.4' -d '{"command": "getNodeInfo"}' | jq
 ```
 
-4. If IRI gets stuck on a milestone, you need to stop the service and restart it.
+4. If IRI gets stuck on a milestone, you need to stop the service, delete the database and database logs, redownload the database, install it, and restart iota service.
 
-5. Add/Remove Neighbors:  
-Add:
+5. Add/Remove Neighbors:
+
+Add Neighbors:
 ```bash
 curl -H 'X-IOTA-API-VERSION: 1.4' -d '{"command":"addNeighbors", "uris":[
   "tcp://ip-of-the-new-neighbor:12345", "udp://ip-of-the-new-neighbor:54321"
 ]}' http://localhost:14265
 ```
-Remove:  
+Remove Neighbors:  
 ```bash
 curl -H 'X-IOTA-API-VERSION: 1.4' -d '{"command":"removeNeighbors", "uris":[
   "tcp://ip-of-the-new-neighbor:12345", "udp://ip-of-the-new-neighbor:54321"
