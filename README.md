@@ -220,8 +220,6 @@ curl -H 'X-IOTA-API-VERSION: 1.4' -d '{"command":"removeNeighbors", "uris":[
 
 ### Installing Nelson
 
-#### Prerequisites
-
 1. Install nodejs 8+ and npm:
 ```bash
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
