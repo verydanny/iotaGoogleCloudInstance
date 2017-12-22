@@ -8,6 +8,8 @@ for free for at least 3 months.
 [Starting Your Instance](#starting-your-instance)  
 [Installing IRI](#installing-iri)  
 [Monitoring IRI](#monitoring-iri)  
+[Installing Nelson](#installing-nelson) (Only Nelson, no manual neighbors)  
+[Installing Nelson with manual neighbors](#installing-nelson-with-manual-neighbors)  
 
 ### Starting Your Instance
 
@@ -201,7 +203,7 @@ curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IO
 
 4. If IRI gets stuck on a milestone, you need to stop the service, delete the database and database logs, redownload the database, install it, and restart iota service.
 
-5. Add/Remove Neighbors:
+5. Add/Remove Neighbors, useful for removing nelson neighbors with 0 incoming new transactions:
 
 Add Neighbors:
 ```bash
@@ -215,6 +217,97 @@ curl -H 'X-IOTA-API-VERSION: 1.4' -d '{"command":"removeNeighbors", "uris":[
   "tcp://ip-of-the-new-neighbor:12345", "udp://ip-of-the-new-neighbor:54321"
 ]}' http://localhost:14265
 ```
+
+### Installing Nelson
+
+#### Prerequisites
+
+1. Install nodejs 8+ and npm:
+```bash
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+2. Navigate to your home directory and create a nelson directory
+```bash
+sudo -u nelson mkdir /home/nelson
+```
+
+3. Install nelson globally.
+```bash
+sudo npm install -g nelson.cli
+```
+
+4. Run this command and then paste in the config.
+```bash
+cat << "EOF" | sudo -u iota tee /home/nelson/config.ini
+```
+Config:
+```
+[nelson]
+cycleInterval = 60
+epochInterval = 300
+apiPort = 18600
+apiHostname = 127.0.0.1
+port = 16600
+IRIHostname = localhost
+IRIPort = 14265
+TCPPort = 14600
+UDPPort = 14600
+dataPath = data/neighbors.db
+incomingMax = 5
+outgoingMax = 4
+isMaster = false
+silent = false
+gui = false
+getNeighbors = https://raw.githubusercontent.com/SemkoDev/nelson.cli/master/ENTRYNODES
+; add as many initial Nelson neighbors, as you like
+neighbors[] = mainnet.deviota.com/16600
+neighbors[] = mainnet2.deviota.com/16600
+neighbors[] = mainnet3.deviota.com/16600
+neighbors[] = iotairi.tt-tec.net/16600
+EOF
+```
+
+5. If you haven't started your IRI service, start it now. Start nelson with:
+```bash
+sudo nelson --config /home/nelson/config.ini
+```
+
+6. Keep an eye on your neighbors with the getNeighbors API call. Paste it in and check every 2-4 minutes.
+```bash
+curl http://localhost:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1.4' -d '{"command": "getNeighbors"}' | jq
+```
+
+7. If you're stuck with a neighbor that's not producing new transactions, like this one (example), or they're producing invalid transactions, remove them:
+```json
+{
+  "address": "example.neighbor:15600",
+  "numberOfAllTransactions": 6535,
+  "numberOfRandomTransactionRequests": 0,
+  "numberOfNewTransactions": 0,
+  "numberOfInvalidTransactions": 0,
+  "numberOfSentTransactions": 11299,
+  "connectionType": "tcp"
+}
+```
+
+Remove the naughty neighbor manually with this command:
+
+```curl
+curl -H 'X-IOTA-API-VERSION: 1.4' -d '{"command":"removeNeighbors", "uris":[
+  "tcp://example.neighbor:15600"
+]}' http://localhost:14265
+```
+
+Remember to have the connection type before their address.
+
+8. If you get stuck on a number **HIGHER** than 243000 for longer than 30 minutes, run this command:
+```bash
+sudo rm -r /home/iota/node/mainnet.log && sudo rm -r /home/iots/node/mainnetdb && sudo -u iota mkdir /home/iota/node/mainnetdb && cd /home/iota/node && sudo curl -O http://db.iota.partners/IOTA.partners-mainnetdb.tar.gz && sudo tar xzfv ./IOTA.partners-mainnetdb.tar.gz -C /home/iota/node/mainnetdb && sudo rm ./IOTA.partners-mainnetdb.tar.gz && sudo service iota start && sudo nelson --config /home/nelson/config.ini
+```
+
+9. It takes patience.
 
 I'm running 6 nodes now, please help out the cost by donating here:
 
