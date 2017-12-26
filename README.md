@@ -31,6 +31,7 @@ for free for at least 3 months.
 ssh, etc. Here's the location of all specific zones: (https://cloud.google.com/compute/docs/regions-zones/)
 
 8. Pick at least 2vCPU and 4gb or ram, recommended is 6gb+ and 4 cores, but that can get pricey.
+***Update 12/26/2017:*** After extensive testing, all you really need is 2core/6gb/128gb (SSD Recommended).
 
 9. Change your boot disk to Ubuntu 17.10, it's the latest and won't require a reboot. Make sure you give yourself at least
 96gb of HD space (I recommend). Pick SSD for faster read/write or standard for cheaper but slower read/write.
