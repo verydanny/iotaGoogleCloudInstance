@@ -8,8 +8,11 @@ for free for at least 3 months.
 [Starting Your Instance](#starting-your-instance)  
 [Installing IRI](#installing-iri)  
 [Monitoring IRI](#monitoring-iri)  
-[Installing Nelson](#installing-nelson) (Only Nelson, no manual neighbors)  
-[Installing Nelson with manual neighbors](#installing-nelson-with-manual-neighbors)  
+[Installing Nelson](#installing-nelson) (Only Nelson, no manual neighbors) 
+
+Soon:   
+Installing Nelson with manual neighbors  
+Adding nelson.gui for node monitoring  
 
 ### Starting Your Instance
 
